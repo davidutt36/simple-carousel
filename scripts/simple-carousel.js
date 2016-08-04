@@ -26,41 +26,41 @@ simpleCarousel.prototype.setOptions = function(){
 	this.slides[0].el.style.transition = `margin-left ${this.options.transitionTime}ms`;
 }
 simpleCarousel.prototype.evaluateSlides = function(){
-	let self = this;
+	var self = this;
 
-	let slideElements = this.carousel.querySelectorAll('.slider-content > img');
-	let sliderControlsListElement = this.carousel.querySelector('.slider-controls > ul');
+	var slideElements = this.carousel.querySelectorAll('.slider-content > img');
+	var sliderControlsListElement = this.carousel.querySelector('.slider-controls > ul');
 
 	sliderControlsListElement.innerHTML = "";
 
-	slideElements.forEach(function(e,i,a){
-		let liControl = document.createElement('li');
+	for(var i = 0; i < slideElements.length; i++) {
+		var liControl = document.createElement('li');
 
-		let reference = `${i}`;
+		var reference = `${i}`;
 		liControl.dataset.slideId = reference;
-		e.dataset.controlId = reference;
+		slideElements[i].dataset.controlId = reference;
 
 		if( i === 0 )
 			liControl.classList.add('current');
 
 		sliderControlsListElement.appendChild(liControl);
-		self.slides.push({el:e,c:liControl,ref:reference});
-	});
+		self.slides.push({el:slideElements[i],c:liControl,ref:reference});
+	}
 
 	this.currentSlideIndex = 0;
 }
 
 simpleCarousel.prototype.registerControlsHandlers= function(){
-	let self = this;
-	this.slides.forEach(function(el){
-		el.c.addEventListener('click',function(evnt){
+	var self = this;
+	for(var i = 0 ; i< this.slides.length ; i++) {
+		this.slides[i].c.addEventListener('click',function(evnt){
 			self.moveTo(parseInt(evnt.target.dataset.slideId));
 		},false);
-	});
+	}
 }
 simpleCarousel.prototype.moveTo = function(nextIndex){
-	let self = this;
-	let sliderWidth = this.sliderContentHolder.clientWidth;
+	var self = this;
+	var sliderWidth = this.sliderContentHolder.clientWidth;
 
 	window.setTimeout(function(){
 		self.slides[self.currentSlideIndex].c.classList.remove('current');
