@@ -12,6 +12,7 @@ function simpleCarousel(carouselElement, options){
 	this.carousel = carouselElement;
 	this.slides = [];
 	this.sliderContentHolder = this.carousel.querySelector('.slider-content');
+	this.currentSlideIndex;
 
 }
 
@@ -45,6 +46,8 @@ simpleCarousel.prototype.evaluateSlides = function(){
 		sliderControlsListElement.appendChild(liControl);
 		self.slides.push({el:e,c:liControl,ref:reference});
 	});
+
+	this.currentSlideIndex = 0;
 }
 
 simpleCarousel.prototype.registerControlsHandlers= function(){
@@ -55,7 +58,15 @@ simpleCarousel.prototype.registerControlsHandlers= function(){
 		},false);
 	});
 }
-simpleCarousel.prototype.moveTo = function(index){
+simpleCarousel.prototype.moveTo = function(nextIndex){
+	let self = this;
 	let sliderWidth = this.sliderContentHolder.clientWidth;
-	this.slides[0].el.style.marginLeft = `-${index*sliderWidth}px`;
+
+	window.setTimeout(function(){
+		self.slides[self.currentSlideIndex].c.classList.remove('current');
+		self.slides[nextIndex].c.classList.add('current');
+		self.currentSlideIndex= nextIndex;
+	},this.options.transitionTime);
+
+	this.slides[0].el.style.marginLeft = `-${nextIndex*sliderWidth}px`;
 }
