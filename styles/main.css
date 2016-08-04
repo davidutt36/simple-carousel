@@ -1,0 +1,64 @@
+.slider{
+   position: relative;
+   flex:auto;
+   width: 100%;
+   height: 100%;
+}
+.slider .slider-container{
+   position: relative;
+   width: 100%;
+   height: 100%;
+   z-index: 600;
+   top: 0px;
+   left: 0px;
+   overflow: hidden;
+}
+.slider-controls{
+   position: absolute;
+   bottom: 0px;
+   left: 0px;
+   width: 100%;
+   display: flex;
+   justify-content: center;
+   z-index: 680;
+}
+.slider-controls ul{
+   display: flex;
+   flex-flow: row nowrap;
+   justify-content: space-between;
+}
+.slider-controls ul li{
+   width: 10px;
+   height: 10px;
+   margin: 15px 5px;
+   background-color: rgb(213, 232, 221);
+   border-radius: 50%;
+   list-style: none;
+   cursor: pointer;
+}
+.slider-controls ul li.current{
+   background-color: rgb(10,237,143);
+}
+.slider-content{
+   position: relative;
+   display: flex;
+   width: 100%;
+   height: 100%;
+   flex-flow: row nowrap;
+   align-content: center;
+   justify-content: distribute-space;
+}
+.slider-content .image-plate{
+   position: relative;
+   margin: 0 auto;
+   width:100%;
+   height: 100%;
+   flex: none;
+}
+.image-plate img{
+   object-position: 50% 50%;
+   object-fit: cover;
+   width: 100%;
+   height:100%;
+
+}
