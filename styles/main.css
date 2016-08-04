@@ -4,16 +4,7 @@
    width: 100%;
    height: 100%;
 }
-.slider .slider-container{
-   position: relative;
-   width: 100%;
-   height: 100%;
-   z-index: 600;
-   top: 0px;
-   left: 0px;
-   overflow: hidden;
-}
-.slider-controls{
+.slider .slider-controls{
    position: absolute;
    bottom: 0px;
    left: 0px;
@@ -46,19 +37,18 @@
    height: 100%;
    flex-flow: row nowrap;
    align-content: center;
-   justify-content: distribute-space;
+   z-index: 600;
+   top: 0px;
+   left: 0px;
+   overflow: hidden;
+   background-color: rgba(228, 249, 240,0.9);
 }
-.slider-content .image-plate{
+.slider-content img{
    position: relative;
    margin: 0 auto;
    width:100%;
    height: 100%;
    flex: none;
-}
-.image-plate img{
    object-position: 50% 50%;
-   object-fit: cover;
-   width: 100%;
-   height:100%;
-
+   object-fit: contain;
 }
