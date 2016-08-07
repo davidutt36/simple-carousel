@@ -4,7 +4,7 @@ window.onload = function() {
 	var slidersElements = document.querySelectorAll('.slider');
 
 	for(var i = 0 ; i < slidersElements.length ; i++) {
-		sliders.push( new simpleCarousel(slidersElements[i],{transitionTime:(i+1)*500}) );
+		sliders.push( new simpleCarousel(slidersElements[i],{transitionTime:(i+1)*500,touchTransitionTime:300}) );
 	}
 	for(var i = 0; i < sliders.length; i++) {
 		sliders[i].initialize();
