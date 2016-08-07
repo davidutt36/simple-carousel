@@ -8,7 +8,7 @@ function simpleCarousel(carouselElement, options){
 		this.options = {// set defaults
 			transitionTime : 500,
 			touchTransitionTime : 300
-		}
+		};
 	}
 	this.carousel = carouselElement;
 	this.slides = [];
