@@ -1,4 +1,5 @@
-function simpleCarousel(carouselElement, options){
+function simpleCarousel(id,carouselElement, options){
+	this.id = id;
 	if ( (function(){
 		//validate options
 		return true;
@@ -24,15 +25,17 @@ function simpleCarousel(carouselElement, options){
 }
 
 simpleCarousel.prototype.initialize= function(){
-	this.evaluateSlides();
+
+	if( this.evaluateSlides() > 0 ){
+		this.registerClickHandlers();
+		this.registerTouchHandlers();
+	}
+
 	this.setOptions();
-	this.registerClickHandlers();
-	this.registerTouchHandlers();
 };
 simpleCarousel.prototype.setOptions = function(){
-	this.slides[0].el.style.marginLeft = '0px';
-	this.slides[0].el.style.transition = `margin-left ${this.options.transitionTime}ms`;
-}
+
+};
 simpleCarousel.prototype.evaluateSlides = function(){
 	var self = this;
 
@@ -40,21 +43,32 @@ simpleCarousel.prototype.evaluateSlides = function(){
 	var sliderControlsListElement = this.carousel.querySelector('.slider-controls > ul');
 
 	sliderControlsListElement.innerHTML = "";
-
-	for(var i = 0; i < slideElements.length; i++) {
-		var liControl = document.createElement('li');
-
-		var reference = `${i}`;
-		liControl.dataset.slideId = reference;
-		slideElements[i].dataset.controlId = reference;
-
-		if( i === 0 )
-			liControl.classList.add('current');
-
-		sliderControlsListElement.appendChild(liControl);
-		self.slides.push({el:slideElements[i],c:liControl,ref:reference});
+	if( !slideElements ){
+		console.warn('Slides couldn\'t be found! in Carousel #'+this.id);
+		return -1;
 	}
-}
+	if( slideElements.length > 1){
+		for(var i = 0; i < slideElements.length; i++) {
+			var liControl = document.createElement('li');
+
+			var reference = `${i}`;
+			liControl.dataset.slideId = reference;
+			slideElements[i].dataset.controlId = reference;
+
+			if( i === 0 )
+				liControl.classList.add('current');
+
+			sliderControlsListElement.appendChild(liControl);
+			self.slides.push({el:slideElements[i],c:liControl,ref:reference});
+		}
+		this.slides[0].el.style.marginLeft = '0px';
+		this.slides[0].el.style.transition = `margin-left ${this.options.transitionTime}ms`;
+
+		return 1;
+	}
+	console.warn('No more than 1 slide found! in Carousel #'+this.id);
+	return 0;
+};
 
 simpleCarousel.prototype.registerClickHandlers= function(){
 	var self = this;
@@ -64,7 +78,7 @@ simpleCarousel.prototype.registerClickHandlers= function(){
 			self.moveToIndex(parseInt(evnt.target.dataset.slideId));
 		},false);
 	}
-}
+};
 simpleCarousel.prototype.registerTouchHandlers = function(){
 	var self = this;
 	this.sliderContentHolder.addEventListener('touchstart',function(evnt){
@@ -83,7 +97,7 @@ simpleCarousel.prototype.registerTouchHandlers = function(){
 		evnt.preventDefault();
 		self.endTouch(evnt);
 	},false);
-}
+};
 
 simpleCarousel.prototype.startTouch = function(evnt){
 	var self = this;
@@ -95,7 +109,7 @@ simpleCarousel.prototype.startTouch = function(evnt){
 
 	this.touchStartPosition.x = evnt.touches[0].pageX;
 	this.touchStartPosition.y = evnt.touches[0].pageY;
-}
+};
 simpleCarousel.prototype.moveTouch = function(evnt){
 
 	this.touchLatestPosition.x =  event.touches[0].pageX;
@@ -106,7 +120,7 @@ simpleCarousel.prototype.moveTouch = function(evnt){
 	var newLeftMargin = this.currentSlideIndex * this.sliderContentHolderWidth - this.dragDistance.x;
 	this.slides[0].el.style.transition = 'none';
 	this.slides[0].el.style.marginLeft = `-${newLeftMargin}px`;
-}
+};
 simpleCarousel.prototype.endTouch = function(evnt){
 	var self = this;
 	var nextIndex = this.currentSlideIndex;
@@ -126,7 +140,7 @@ simpleCarousel.prototype.endTouch = function(evnt){
 		self.slides[0].el.style.transition = `margin-left ${self.options.transitionTime}ms`;
 	},this.options.touchTransitionTime);
 	this.slides[0].el.style.marginLeft = `-${nextIndex*this.sliderContentHolderWidth}px`;
-}
+};
 simpleCarousel.prototype.moveToIndex = function(nextIndex){
 	var self = this;
 	var sliderWidth = this.sliderContentHolderWidth;
@@ -137,4 +151,4 @@ simpleCarousel.prototype.moveToIndex = function(nextIndex){
 		self.currentSlideIndex= nextIndex;
 	},this.options.transitionTime);
 	this.slides[0].el.style.marginLeft = `-${nextIndex*sliderWidth}px`;
-}
+};
