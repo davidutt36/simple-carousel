@@ -13,8 +13,9 @@ function simpleCarousel(id,carouselElement, options){
 	}
 	this.carousel = carouselElement;
 	this.slides = [];
-	this.sliderContentHolder = this.carousel.querySelector('.slider-content');
-	this.sliderContentHolderWidth = this.sliderContentHolder.clientWidth;
+	this.sliderFrame = this.carousel.querySelector('.slider-frame');
+	this.sliderContentHolder = this.sliderFrame.querySelector('.slider-content');
+	this.sliderFrameWidth = this.sliderFrame.clientWidth;
 	this.currentSlideIndex = 0;
 
 	this.isLongTouch = 0;
@@ -39,10 +40,10 @@ simpleCarousel.prototype.setOptions = function(){
 simpleCarousel.prototype.evaluateSlides = function(){
 	var self = this;
 
-	var slideElements = this.carousel.querySelectorAll('.slider-content > img');
+	var slideElements = this.sliderFrame.querySelectorAll(' .slider-content > img');
 	var sliderControlsListElement = this.carousel.querySelector('.slider-controls > ul');
-
 	sliderControlsListElement.innerHTML = "";
+
 	if( !slideElements ){
 		console.warn('Slides couldn\'t be found! in Carousel #'+this.id);
 		return -1;
@@ -61,8 +62,7 @@ simpleCarousel.prototype.evaluateSlides = function(){
 			sliderControlsListElement.appendChild(liControl);
 			self.slides.push({el:slideElements[i],c:liControl,ref:reference});
 		}
-		this.slides[0].el.style.marginLeft = '0px';
-		this.slides[0].el.style.transition = `margin-left ${this.options.transitionTime}ms`;
+		this.sliderContentHolder.style.transition = `transform ${this.options.transitionTime}ms`;
 
 		return 1;
 	}
@@ -117,38 +117,39 @@ simpleCarousel.prototype.moveTouch = function(evnt){
 
 	this.dragDistance.x = this.touchLatestPosition.x - this.touchStartPosition.x;
 
-	var newLeftMargin = this.currentSlideIndex * this.sliderContentHolderWidth - this.dragDistance.x;
-	this.slides[0].el.style.transition = 'none';
-	this.slides[0].el.style.marginLeft = `-${newLeftMargin}px`;
+	var newLeftMargin = this.currentSlideIndex * this.sliderFrameWidth - this.dragDistance.x;
+
+	this.sliderContentHolder.style.transition = 'none';
+	this.sliderContentHolder.style.transform = `translateX(-${newLeftMargin}px)`;
 };
 simpleCarousel.prototype.endTouch = function(){
 	var self = this;
 	var nextIndex = this.currentSlideIndex;
-	if(Math.abs(this.dragDistance.x) > this.sliderContentHolderWidth/2 || this.isLongTouch === false) {
+	if(Math.abs(this.dragDistance.x) > this.sliderFrameWidth/2 || this.isLongTouch === false) {
 		if(this.dragDistance.x > 0 &&  this.currentSlideIndex > 0) {
 			nextIndex = this.currentSlideIndex - 1;
 		}else if(this.dragDistance.x < 0 && this.currentSlideIndex < this.slides.length - 1) {
 			nextIndex = this.currentSlideIndex + 1;
 		}
 	}
-	this.slides[0].el.style.transition = `margin-left ${this.options.touchTransitionTime}ms`;
+	this.sliderContentHolder.style.transition = `transform ${this.options.touchTransitionTime}ms`;
 
 	window.setTimeout(function(){
 		self.slides[self.currentSlideIndex].c.classList.remove('current');
 		self.slides[nextIndex].c.classList.add('current');
 		self.currentSlideIndex= nextIndex;
-		self.slides[0].el.style.transition = `margin-left ${self.options.transitionTime}ms`;
+		self.sliderContentHolder.style.transition = `transform ${self.options.transitionTime}ms`;
 	},this.options.touchTransitionTime);
-	this.slides[0].el.style.marginLeft = `-${nextIndex*this.sliderContentHolderWidth}px`;
+	this.sliderContentHolder.style.transform = `translateX(-${nextIndex*this.sliderFrameWidth}px)`;
 };
 simpleCarousel.prototype.moveToIndex = function(nextIndex){
 	var self = this;
-	var sliderWidth = this.sliderContentHolderWidth;
+	var sliderWidth = this.sliderFrameWidth;
 
 	window.setTimeout(function(){
 		self.slides[self.currentSlideIndex].c.classList.remove('current');
 		self.slides[nextIndex].c.classList.add('current');
 		self.currentSlideIndex= nextIndex;
 	},this.options.transitionTime);
-	this.slides[0].el.style.marginLeft = `-${nextIndex*sliderWidth}px`;
+	this.sliderContentHolder.style.transform = `translateX(-${nextIndex*sliderWidth}px)`;
 };
