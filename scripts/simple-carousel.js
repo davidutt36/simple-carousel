@@ -81,18 +81,18 @@ simpleCarousel.prototype.registerClickHandlers= function(){
 };
 simpleCarousel.prototype.registerTouchHandlers = function(){
 	var self = this;
-	this.sliderContentHolder.addEventListener('touchstart',function(evnt){
+	this.sliderFrame.addEventListener('touchstart',function(evnt){
 		evnt.stopPropagation();
 		evnt.preventDefault();
 		self.startTouch(evnt);
 	},false);
-	this.sliderContentHolder.addEventListener('touchmove',function(evnt){
+	this.sliderFrame.addEventListener('touchmove',function(evnt){
 		evnt.stopPropagation();
 		evnt.preventDefault();
 
 		self.moveTouch(evnt);
 	},false);
-	this.sliderContentHolder.addEventListener('touchend',function(evnt){
+	this.sliderFrame.addEventListener('touchend',function(evnt){
 		evnt.stopPropagation();
 		evnt.preventDefault();
 		self.endTouch(evnt);
