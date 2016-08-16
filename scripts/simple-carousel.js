@@ -112,8 +112,8 @@ simpleCarousel.prototype.startTouch = function(evnt){
 };
 simpleCarousel.prototype.moveTouch = function(evnt){
 
-	this.touchLatestPosition.x =  event.touches[0].pageX;
-	this.touchLatestPosition.y =  event.touches[0].pageY;
+	this.touchLatestPosition.x =  evnt.touches[0].pageX;
+	this.touchLatestPosition.y =  evnt.touches[0].pageY;
 
 	this.dragDistance.x = this.touchLatestPosition.x - this.touchStartPosition.x;
 
@@ -121,7 +121,7 @@ simpleCarousel.prototype.moveTouch = function(evnt){
 	this.slides[0].el.style.transition = 'none';
 	this.slides[0].el.style.marginLeft = `-${newLeftMargin}px`;
 };
-simpleCarousel.prototype.endTouch = function(evnt){
+simpleCarousel.prototype.endTouch = function(){
 	var self = this;
 	var nextIndex = this.currentSlideIndex;
 	if(Math.abs(this.dragDistance.x) > this.sliderContentHolderWidth/2 || this.isLongTouch === false) {
