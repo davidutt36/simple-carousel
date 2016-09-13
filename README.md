@@ -1,2 +1,2 @@
-# simple-carousel
-Just a simple carousel to use in a website that I am developing.
+# Simple Carousel
+View Demo [@GitHub Page](https://samanrtehrani.github.io/simple-carousel/)
