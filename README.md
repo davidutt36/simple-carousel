@@ -1,2 +1,2 @@
 # Simple Carousel
-View Demo [@GitHub Page](https://samanrtehrani.github.io/simple-carousel/)
+View Demo [@GitHub Page](https://samantehrani.github.io/simple-carousel/)
